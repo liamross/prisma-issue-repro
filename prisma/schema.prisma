@@ -1,0 +1,21 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "go run github.com/prisma/prisma-client-go"
+}
+
+model TestValueOne {
+  id            String         @id @default(cuid())
+  // This breaks it believe it or not!
+  anyOtherArray String[]
+  testValueTwos TestValueTwo[]
+}
+
+model TestValueTwo {
+  id             String       @id @default(cuid())
+  testValueOneId String
+  testValueOne   TestValueOne @relation(fields: [testValueOneId], references: [id])
+}
