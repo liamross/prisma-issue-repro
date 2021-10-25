@@ -3,15 +3,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-generator client {
+generator db {
   provider = "go run github.com/prisma/prisma-client-go"
 }
 
 model TestValueOne {
   id            String         @id @default(cuid())
-  // This breaks it believe it or not!
-  anyOtherArray String[]
   testValueTwos TestValueTwo[]
+
+  // This breaks it believe it or not! If you remove this line and rerun the
+  // generate command, all the issues in main.go will be resolved.
+  anyOtherArray String[]
 }
 
 model TestValueTwo {
